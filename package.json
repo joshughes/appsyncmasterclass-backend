@@ -1,0 +1,25 @@
+{
+  "name": "appsyncmasterclass-backend",
+  "private": true,
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "sls": "sls"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/joshughes/appsyncmasterclass-backend.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/joshughes/appsyncmasterclass-backend/issues"
+  },
+  "homepage": "https://github.com/joshughes/appsyncmasterclass-backend#readme",
+  "devDependencies": {
+    "serverless": "^3.27.0",
+    "serverless-appsync-plugin": "^1.14.0"
+  }
+}

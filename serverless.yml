@@ -1,0 +1,59 @@
+service: appsyncmasterclass-backend
+# app and org for use with dashboard.serverless.com
+#app: your-app-name
+#org: your-org-name
+
+# You can pin your service to only deploy with a specific Serverless version
+# Check out our docs for more details
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: nodejs16.x
+  region: us-east-2
+
+custom:
+  appSync:
+  - ${file(serverless.appsync.yaml)}
+package: 
+  exclude:
+    - package-lock.json
+    - package.json
+plugins:
+  - serverless-appsync-plugin
+
+resources:
+  Resources:
+    WebUserPoolClient:
+      Type: AWS::Cognito::UserPoolClient
+      Properties:
+        UserPoolId: !Ref CognitoUserPool
+        ClientName: Web
+        ExplicitAuthFlows:
+          - ALLOW_USER_SRP_AUTH
+          - ALLOW_USER_PASSWORD_AUTH
+          - ALLOW_REFRESH_TOKEN_AUTH
+        PreventUserExistenceErrors: ENABLED
+    CognitoUserPool:
+      Type: AWS::Cognito::UserPool
+      Properties:
+        AutoVerifiedAttributes:
+          - email
+        Policies:
+          PasswordPolicy:
+            MinimumLength: 8
+            RequireLowercase: false
+            RequireNumbers: false
+            RequireUppercase: false
+            RequireSymbols: false
+        UsernameAttributes:
+          - email
+        Schema: 
+          - AttributeDataType: String 
+            Name: name 
+            Required: false
+            Mutable: true 
+  Outputs:
+    CognitoUserPoolId:
+      Value: !Ref CognitoUserPool
+
