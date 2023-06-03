@@ -35,6 +35,8 @@ functions:
     handler: functions/confirm-user-signup.handler
     environment:
       USERS_TABLE: !Ref UsersTable
+      # COGNITO_USER_POOL_ID: !Ref CognitoUserPool
+      # WEB_COGNITO_USER_POOL_CLIENT_ID: !Ref WebUserPoolClient
 
     iamRoleStatements:
       - Effect: Allow
@@ -102,3 +104,5 @@ resources:
       Value: ${self:custom.region}
     CognitoUserPoolId:
       Value: !Ref CognitoUserPool
+    WebUserPoolClientId:
+      Value: !Ref WebUserPoolClient
