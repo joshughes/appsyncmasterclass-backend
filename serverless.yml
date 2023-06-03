@@ -5,7 +5,7 @@ service: appsyncmasterclass-backend
 
 # You can pin your service to only deploy with a specific Serverless version
 # Check out our docs for more details
-frameworkVersion: '3'
+frameworkVersion: "3"
 
 provider:
   name: aws
@@ -18,22 +18,24 @@ provider:
 
 custom:
   stage: ${opt:stage, self:provider.stage}
+  region: ${opt:region, self:provider.region}
   appSync:
-  - ${file(serverless.appsync.yaml)}
-package: 
+    - ${file(serverless.appsync.yaml)}
+package:
   exclude:
     - package-lock.json
     - package.json
 plugins:
   - serverless-appsync-plugin
   - serverless-iam-roles-per-function
+  - serverless-export-env
 
 functions:
   confirmUserSignup:
     handler: functions/confirm-user-signup.handler
     environment:
       USERS_TABLE: !Ref UsersTable
-    
+
     iamRoleStatements:
       - Effect: Allow
         Action: dynamodb:PutItem
@@ -80,11 +82,11 @@ resources:
             RequireSymbols: false
         UsernameAttributes:
           - email
-        Schema: 
-          - AttributeDataType: String 
-            Name: name 
+        Schema:
+          - AttributeDataType: String
+            Name: name
             Required: false
-            Mutable: true 
+            Mutable: true
         LambdaConfig:
           PostConfirmation: !GetAtt ConfirmUserSignupLambdaFunction.Arn
 
@@ -92,10 +94,11 @@ resources:
       Type: AWS::Lambda::Permission
       Properties:
         Action: lambda:invokeFunction
-        FunctionName: !Ref ConfirmUserSignupLambdaFunction 
+        FunctionName: !Ref ConfirmUserSignupLambdaFunction
         Principal: cognito-idp.amazonaws.com
-        SourceArn: !GetAtt CognitoUserPool.Arn 
+        SourceArn: !GetAtt CognitoUserPool.Arn
   Outputs:
+    AwsRegion:
+      Value: ${self:custom.region}
     CognitoUserPoolId:
       Value: !Ref CognitoUserPool
-
