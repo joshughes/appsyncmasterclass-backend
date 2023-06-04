@@ -1,0 +1,23 @@
+$util.error("Test Error", $util.toJson($ctx))
+{
+    "version" : "2018-05-29",
+    "operation" : "UpdateItem",
+    "key": {
+        "id": $util.dynamodb.toDynamoDBJson($ctx.identity.username)
+    },
+    "update" : {
+        "expression" : "#name = :name, imageUrl = :imageUrl, bio = :bio, #location = :location, website = :website, birthday = :birthday",
+        "expressionNames" : {
+           "#name" : "name",
+           "#location" : "location" 
+       },
+       "expressionValues" : {
+           ":name" : $util.dynamodb.toDynamoDBJson($ctx.arguments.newProfile.name),
+           ":imageUrl" : $util.dynamodb.toDynamoDBJson($ctx.arguments.newProfile.imageUrl),
+           ":bio" : $util.dynamodb.toDynamoDBJson($ctx.arguments.newProfile.bio),
+           ":location" : $util.dynamodb.toDynamoDBJson($ctx.arguments.newProfile.location),
+           ":website" : $util.dynamodb.toDynamoDBJson($ctx.arguments.newProfile.website),
+           ":birthday": $util.dynamodb.toDynamoDBJson($ctx.arguments.newProfile.birthday)
+       }
+    }
+}
