@@ -5,3 +5,18 @@ userPoolConfig:
   awsRegion: us-east-2
   defaultAction: ALLOW
   userPoolId: !Ref CognitoUserPool
+mappingTemplatesLocation: mapping-templates
+mappingTemplates:
+  - type: Query
+    field: getMyProfile
+    dataSource: usersTable
+dataSources:
+  - type: NONE
+    name: None
+    description: None
+  - type: AMAZON_DYNAMODB
+    name: usersTable
+    description: Users Table
+    config:
+      tableName: !Ref UsersTable
+      awsRegion: us-east-2
