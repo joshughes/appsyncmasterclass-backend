@@ -22,7 +22,7 @@ type Query {
 }
 
 type Mutation {
-  editMyProfile(newProfile: ProfileInput): MyProfile
+  editMyProfile(newProfile: ProfileInput): MyProfile!
 
   tweet(text: String!): Tweet!
 
