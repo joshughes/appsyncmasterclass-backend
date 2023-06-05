@@ -9,7 +9,7 @@ describe("Given an authenticated user", () => {
     user = await given.an_authenticated_user();
   });
 
-  it("The user can fetch his profile with getMyProfile", async () => {
+  it("The user can fetch their profile with getMyProfile", async () => {
     const profile = await when.a_user_calls_getMyProfile(user);
     expect(profile).toMatchObject({
       id: user.userName,
@@ -29,5 +29,19 @@ describe("Given an authenticated user", () => {
     const [firstName, lastName] = user.name.split(" ");
     expect(profile.screenName).toContain(firstName);
     expect(profile.screenName).toContain(lastName);
+  });
+
+  it("The user can edit their profile with getMyProfile", async () => {
+    const profile = await when.a_user_calls_getMyProfile(user);
+    const name = chance.first();
+    const input = {
+      name,
+    };
+
+    const newProfile = await when.a_user_calls_editMyProfile(user, input);
+    expect(newProfile).toMatchObject({
+      ...profile,
+      name,
+    });
   });
 });
